@@ -1,0 +1,26 @@
+SELECT * FROM `tony1-508206.project1.product_main`
+
+MERGE `tony1-508206.project1.product_main` AS target
+USING `tony1-508206.project1.product_staging` AS source
+ON target.ProductID = source.ProductID
+WHEN MATCHED THEN
+  UPDATE SET
+    target.Name = source.Name,
+    target.Price = source.Price,
+    target.Quantity = source.Quantity,
+    target.ManufacturingDate = source.ManufacturingDate
+WHEN NOT MATCHED THEN
+  INSERT (
+    ProductID,
+    Name,
+    Price,
+    Quantity,
+    ManufacturingDate
+  )
+  VALUES (
+    source.ProductID,
+    source.Name,
+    source.Price,
+    source.Quantity,
+    source.ManufacturingDate
+  );
